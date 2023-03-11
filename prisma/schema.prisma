@@ -1,0 +1,48 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model features {
+  id                    Int                     @id @default(autoincrement())
+  name                  String                  @db.Text
+  description           String                  @db.Text
+  category              String                  @db.Text
+  date                  DateTime                @db.DateTime(0)
+  features_sliders      features_sliders[]
+  features_conditionals features_conditionals[]
+}
+
+model features_sliders {
+  id                  Int       @id @default(autoincrement())
+  label               String    @db.VarChar(64)
+  afterText           String    @db.VarChar(64)
+  value               String    @db.VarChar(32)
+  min                 Int
+  max                 Int
+  steps               Float     @db.Float
+  features            features? @relation(fields: [featureId], references: [id])
+  featureId           Int?
+  conditionalRequired Int?      @default(0)
+}
+
+model features_conditionals {
+  id        Int       @id @default(autoincrement())
+  featureId Int
+  features  features? @relation(fields: [featureId], references: [id])
+  label     String    @db.VarChar(256)
+}
+
+model features_favorited {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  featureId Int
+  date      DateTime @default(now()) @db.DateTime(0)
+}
