@@ -6,8 +6,16 @@ export default class FeatureController {
   private readonly featureService = container.resolve(FeatureService)
 
   async getAll(req: Request, res: Response) {
-    const users = await this.featureService.getAll()
+    const features = await this.featureService.getAll()
 
-    return res.json(users)
+    return res.json(features)
+  }
+
+  async getByID(req: Request, res: Response) {
+    const id = Number(req.params.id)
+
+    const features = await this.featureService.getById(id)
+
+    return res.json(features)
   }
 }
