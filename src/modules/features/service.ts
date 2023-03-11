@@ -57,4 +57,27 @@ export class FeatureService {
       throw error
     }
   }
+
+  async getLatests(): Promise<IFeature[]> {
+    try {
+      const features: IFeature[] = await this.prisma.features.findMany({
+        take: 6,
+        orderBy: {
+          date: 'desc',
+        },
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          category: true,
+          date: true,
+          features_conditionals: true,
+          features_sliders: true,
+        },
+      })
+      return features
+    } catch (error) {
+      throw error
+    }
+  }
 }

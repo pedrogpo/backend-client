@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response } from 'express'
 import 'express-async-errors'
 import { featureRoutes } from './routes/features.routes'
+import { logsRoutes } from './routes/logs.routes'
 import { handleErrors } from './middleware/handleErrors'
 
 const app = express()
@@ -26,6 +27,7 @@ app.use(function (req, res, next) {
 })
 
 app.use(featureRoutes)
+app.use(logsRoutes)
 
 // app.use(ensureAuthentication)
 

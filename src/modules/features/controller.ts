@@ -18,4 +18,10 @@ export default class FeatureController {
 
     return res.json(features)
   }
+
+  async getLatests(req: Request, res: Response) {
+    const features = await this.featureService.getLatests()
+
+    return res.json(features)
+  }
 }

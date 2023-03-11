@@ -46,3 +46,16 @@ model features_favorited {
   featureId Int
   date      DateTime @default(now()) @db.DateTime(0)
 }
+
+model client_logins {
+  id           Int      @id @default(autoincrement())
+  type         String   @db.VarChar(100)
+  user         Int
+  username     String   @db.VarChar(300)
+  email        String   @db.VarChar(450)
+  hwid         String   @db.VarChar(100)
+  ip           String   @db.VarChar(100)
+  windows_user String   @db.VarChar(100)
+  exe_id       String   @db.VarChar(100)
+  date         DateTime @db.DateTime(0)
+}
