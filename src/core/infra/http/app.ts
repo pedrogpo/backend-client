@@ -1,8 +1,12 @@
-import express, { NextFunction, Request, Response } from 'express'
+import express from 'express'
 import 'express-async-errors'
-import { featureRoutes } from './routes/features.routes'
+import { featureRoutes } from './routes/features/features.routes'
 import { logsRoutes } from './routes/logs.routes'
 import { handleErrors } from './middleware/handleErrors'
+import { ensureAuthentication } from './middleware/ensureAuthentication'
+import { JWTService } from '~/core/services/jwt'
+import { container } from 'tsyringe'
+import { favoriteFeaturesRoutes } from './routes/features/favorites.routes'
 
 const app = express()
 
@@ -26,10 +30,22 @@ app.use(function (req, res, next) {
   next()
 })
 
-app.use(featureRoutes)
-app.use(logsRoutes)
+app.get('/', (req, res) => {
+  const jwtService = container.resolve(JWTService)
 
-// app.use(ensureAuthentication)
+  const token = jwtService.sign({
+    id: '1',
+    email: 'ploowcs@gmail.com',
+  })
+
+  res.json({ token })
+})
+
+app.use(ensureAuthentication)
+
+app.use(featureRoutes)
+app.use(favoriteFeaturesRoutes)
+app.use(logsRoutes)
 
 app.use(handleErrors)
 

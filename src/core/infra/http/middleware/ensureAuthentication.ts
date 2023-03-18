@@ -8,13 +8,13 @@ export async function ensureAuthentication(
   res: Response,
   next: NextFunction
 ) {
-  const authHeader = req.headers.authorization
+  const token = req.headers.authorization
 
-  if (!authHeader) {
+  if (!token) {
     throw new Error('JWT token is missing')
   }
 
-  const [, token] = authHeader.split(' ')
+  console.log(token)
 
   try {
     const jwtService = container.resolve(JWTService)
