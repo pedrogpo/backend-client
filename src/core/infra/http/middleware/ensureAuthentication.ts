@@ -2,19 +2,20 @@ import { verify } from 'jsonwebtoken'
 import { NextFunction, Request, Response } from 'express'
 import { JWTService } from '~/core/services/jwt'
 import { container } from 'tsyringe'
+import { HttpError } from '~/core/filter/error'
 
 export async function ensureAuthentication(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
-  const token = req.headers.authorization
+  const authHeader = req.headers.authorization
 
-  if (!token) {
-    throw new Error('JWT token is missing')
+  if (!authHeader) {
+    throw new HttpError(401, 'JWT token is missing')
   }
 
-  console.log(token)
+  const [, token] = authHeader.split(' ')
 
   try {
     const jwtService = container.resolve(JWTService)
@@ -25,7 +26,7 @@ export async function ensureAuthentication(
 
     next()
   } catch {
-    throw new Error('Invalid JWT token')
+    throw new HttpError(401, 'Invalid JWT token')
   }
 }
 
