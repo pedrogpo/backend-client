@@ -15,11 +15,11 @@ export default class FavoriteFeaturesController {
 
   async addFavorite(req: Request, res: Response) {
     const { client_id } = req
-    const { feature } = req.body
+    const { featureId } = req.body
 
     const favorite = await this.favoriteFeaturesService.addFavorite(
       Number(client_id),
-      Number(feature)
+      Number(featureId)
     )
 
     return res.json(favorite)
@@ -27,11 +27,11 @@ export default class FavoriteFeaturesController {
 
   async removeFavorite(req: Request, res: Response) {
     const { client_id } = req
-    const { feature } = req.body
+    const { featureId } = req.body
 
     const favorite = await this.favoriteFeaturesService.removeFavorite(
       Number(client_id),
-      Number(feature)
+      Number(featureId)
     )
 
     return res.json(favorite)
